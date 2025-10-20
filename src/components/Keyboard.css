@@ -1,0 +1,53 @@
+.sudoku-keyboard {
+  display: flex;
+  gap: min(8px, 1vw);
+  margin: 16px 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: min(90vw, 500px);
+  margin: 16px auto;
+}
+.sudoku-key {
+  width: min(32px, 8vw);
+  height: min(32px, 8vw);
+  font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+  border: 1px solid #888;
+  border-radius: 4px;
+  background: #f5f5f5;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+.sudoku-key:hover {
+  background: #e0e0e0;
+}
+
+/* Mobile-specific adjustments for keyboard */
+@media (max-width: 768px) {
+  .sudoku-keyboard {
+    gap: min(6px, 1.5vw);
+    max-width: 95vw;
+  }
+  
+  .sudoku-key {
+    width: min(36px, 9vw);
+    height: min(36px, 9vw);
+  }
+}
+
+@media (max-width: 480px) {
+  .sudoku-keyboard {
+    gap: 4px;
+    max-width: 98vw;
+  }
+  
+  .sudoku-key {
+    width: min(40px, 10vw);
+    height: min(40px, 10vw);
+    font-size: clamp(0.7rem, 3vw, 1rem);
+  }
+}
