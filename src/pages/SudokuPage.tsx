@@ -59,6 +59,12 @@ const Game: React.FC<GameProps> = ({ game }) => {
     }
   };
 
+  const onClearBoard = () => {
+    const clearedBoard = board.map(cell => cell.fixed ? cell : { ...cell, value: '0' });
+    setBoard(clearedBoard);
+    saveSudokuBoard(clearedBoard);
+  }
+
   if (!gameHasFinished) {
     return (
       <>
@@ -67,7 +73,10 @@ const Game: React.FC<GameProps> = ({ game }) => {
           selectedCell={selectedCell}
           onCellClick={setSelectedCell}
         />
-        <Keyboard onKeyPress={handleKeyPress} />
+        <Keyboard 
+          onKeyPress={handleKeyPress} 
+          onClearBoard={onClearBoard}
+        />
       </>
     );
   } else {
