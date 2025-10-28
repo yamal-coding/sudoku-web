@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import './Keyboard.css';
+import numberIcons from './Numbers.tsx';
 
 interface KeyboardProps {
   onKeyPress?: (value: number) => void;
@@ -33,7 +34,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress }) => {
             onKeyDown={handleActivate(num)}
           >
             <img
-              src={`src/assets/number-${num}.svg`}
+              src={numberIcons[num]}
               alt=""
               aria-hidden="true"
               draggable={false}
