@@ -23,6 +23,13 @@
   min-height: 0;
   position: relative;
 }
+.sudoku-cell-number {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
 .sudoku-cell:nth-child(3n) {
   border-right: 2px solid #333;
 }
