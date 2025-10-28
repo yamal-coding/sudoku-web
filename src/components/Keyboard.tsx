@@ -1,23 +1,48 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './Keyboard.css';
 
 interface KeyboardProps {
   onKeyPress?: (value: number) => void;
 }
 
-const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress }) => (
-  <div className="sudoku-keyboard">
-    {Array.from({ length: 9 }, (_, i) => (
-      <button
-        key={i + 1}
-        className="sudoku-key"
-        onClick={() => onKeyPress && onKeyPress(i + 1)}
-        type="button"
-      >
-        {i + 1}
-      </button>
-    ))}
-  </div>
-);
+const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress }) => {
+  const handleActivate = useCallback(
+    (val: number) => (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+      // Allow click or Enter/Space key press
+      if ('key' in e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+      }
+      onKeyPress?.(val);
+    },
+    [onKeyPress]
+  );
+
+  return (
+    <div className="sudoku-keyboard" role="group" aria-label="Number input">
+      {Array.from({ length: 9 }, (_, i) => {
+        const num = i + 1;
+        return (
+          <div
+            key={num}
+            className="sudoku-key icon-only"
+            role="button"
+            tabIndex={0}
+            aria-label={`Number ${num}`}
+            onClick={handleActivate(num)}
+            onKeyDown={handleActivate(num)}
+          >
+            <img
+              src={`src/assets/number-${num}.svg`}
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export default Keyboard;

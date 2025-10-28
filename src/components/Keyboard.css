@@ -1,53 +1,56 @@
+/* Icon-only numeric keyboard */
+/* Single-line keyboard (no gaps) */
 .sudoku-keyboard {
   display: flex;
-  gap: min(8px, 1vw);
-  margin: 16px 0;
+  flex-wrap: nowrap;
   justify-content: center;
-  flex-wrap: wrap;
-  max-width: min(90vw, 500px);
-  margin: 16px auto;
+  align-items: center;
+  gap: 0; /* ensure no spacing */
+  margin: 8px auto 0 auto;
+  padding: 0;
+  max-width: none;
 }
-.sudoku-key {
-  width: min(32px, 8vw);
-  height: min(32px, 8vw);
-  font-size: clamp(0.8rem, 2.5vw, 1.1rem);
-  border: 1px solid #888;
-  border-radius: 4px;
-  background: #f5f5f5;
-  cursor: pointer;
-  transition: background 0.2s;
+
+.sudoku-key.icon-only {
+  background: transparent;
+  border: none;
+  padding: 0; /* remove internal spacing */
+  width: clamp(36px, 6.8vw, 56px);
+  height: clamp(36px, 6.8vw, 56px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  flex-shrink: 0;
-}
-.sudoku-key:hover {
-  background: #e0e0e0;
-}
-
-/* Mobile-specific adjustments for keyboard */
-@media (max-width: 768px) {
-  .sudoku-keyboard {
-    gap: min(6px, 1.5vw);
-    max-width: 95vw;
-  }
-  
-  .sudoku-key {
-    width: min(36px, 9vw);
-    height: min(36px, 9vw);
-  }
+  cursor: pointer;
+  position: relative;
+  border-radius: 6px; /* for focus outline shape */
+  transition: transform 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-@media (max-width: 480px) {
-  .sudoku-keyboard {
-    gap: 4px;
-    max-width: 98vw;
-  }
-  
-  .sudoku-key {
-    width: min(40px, 10vw);
-    height: min(40px, 10vw);
-    font-size: clamp(0.7rem, 3vw, 1rem);
+.sudoku-key.icon-only:focus-visible {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.sudoku-key.icon-only:active {
+  transform: scale(0.93);
+}
+
+.sudoku-key.icon-only img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sudoku-key.icon-only:hover img {
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.25));
+}
+
+@media (max-width: 540px) {
+  .sudoku-key.icon-only {
+    width: clamp(32px, 9.5vw, 50px);
+    height: clamp(32px, 9.5vw, 50px);
   }
 }
