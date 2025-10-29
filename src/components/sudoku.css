@@ -17,7 +17,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(1rem, 4vw, 1.2rem);
   border: 1px solid #ccc;
   box-sizing: border-box;
   min-height: 0;
@@ -52,7 +51,6 @@
   }
   
   .sudoku-cell {
-    font-size: clamp(0.9rem, 5vw, 1.2rem);
     border-width: 0.5px;
   }
   
@@ -68,9 +66,5 @@
 @media (max-width: 480px) {
   .sudoku-grid {
     max-width: 98vw;
-  }
-  
-  .sudoku-cell {
-    font-size: clamp(1rem, 6vw, 1.4rem);
   }
 }

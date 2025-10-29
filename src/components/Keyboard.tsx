@@ -2,43 +2,69 @@ import React, { useCallback } from 'react';
 import './Keyboard.css';
 import numberIcons from './Numbers.tsx';
 import reloadIcon from '../assets/reload.svg';
+import undoIcon from '../assets/undo.svg';
+import eraseIcon from '../assets/erase.svg';
+import annotationIcon from '../assets/annotation.svg';
 
 interface KeyboardProps {
-  onKeyPress?: (value: number) => void;
-  onClearBoard?: () => void;
+  onNumberPressed?: (value: number) => void;
+  onClearBoard: () => void;
+  onUndo?: () => void;
+  onErase?: () => void;
+  onAnnotate?: () => void;
 }
 
-interface NumericKeyboardProps {
-  onKeyPress: (value: number) => void;
-}
+const Keyboard: React.FC<KeyboardProps> = ({ 
+  onNumberPressed, 
+  onClearBoard, 
+  onUndo,
+  onErase,
+  onAnnotate
+ }) => (
+  <div className="keyboard-wrapper">
+    <div className="game-options-row" role="group" aria-label="Game options">
+      <GameOption icon={reloadIcon} label="Reload board" onClick={onClearBoard} />
+      {onUndo && <GameOption icon={undoIcon} label="Undo" onClick={onUndo} />}
+      {onErase && <GameOption icon={eraseIcon} label="Erase" onClick={onErase} />}
+      {onAnnotate && <GameOption icon={annotationIcon} label="Annotation" onClick={onAnnotate} />}
+    </div>
+    {onNumberPressed && <NumericKeyboard onKeyPress={onNumberPressed} />}
+  </div>
+);
 
-const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, onClearBoard }) => {
-  const activateReload = useCallback(
+const GameOption: React.FC<{
+  icon: string;
+  label: string;
+  onClick: () => void;
+  className?: string;
+}> = ({ icon, label, onClick, className }) => {
+  const handle = useCallback(
     (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
       if ('key' in e) {
         if (e.key !== 'Enter' && e.key !== ' ') return;
         e.preventDefault();
       }
-      onClearBoard?.();
+      onClick();
     },
-    [onClearBoard]
+    [onClick]
   );
 
   return (
-    <div className="keyboard-wrapper">
-      <div
-        className="reload-key"
-        role="button"
-        tabIndex={0}
-        aria-label="Reload board"
-        onClick={activateReload}
-        onKeyDown={activateReload}
-      >
-        <img src={reloadIcon} alt="" aria-hidden="true" draggable={false} />
-      </div>
-      {onKeyPress && <NumericKeyboard onKeyPress={onKeyPress} />}
+    <div
+      className={`game-option${className ? ' ' + className : ''}`}
+      role="button"
+      tabIndex={0}
+      aria-label={label}
+      onClick={handle}
+      onKeyDown={handle}
+    >
+      <img src={icon} alt="" aria-hidden="true" draggable={false} />
     </div>
   );
+};
+
+interface NumericKeyboardProps {
+  onKeyPress: (value: number) => void;
 }
 
 const NumericKeyboard: React.FC<NumericKeyboardProps> = ({ onKeyPress }) => {

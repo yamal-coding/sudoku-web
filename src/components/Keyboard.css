@@ -64,8 +64,23 @@
   gap: 4px;
 }
 
-.reload-key {
-  width: clamp(34px, 6vw, 52px);
+/* Horizontal row for game/game action options aligned within board width */
+.game-options-row {
+  --board-max: 500px; /* should match board's max width for alignment */
+  width: 100%;
+  max-width: min(100%, var(--board-max));
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: stretch;
+  margin: 0 auto 0 auto;
+  padding: 0 0;
+  box-sizing: border-box;
+}
+
+.game-option {
+  flex: 1 1 0;
+  width: 100%;
   height: clamp(34px, 6vw, 52px);
   display: flex;
   align-items: center;
@@ -75,6 +90,6 @@
   -webkit-tap-highlight-color: transparent;
   position: relative;
 }
-.reload-key img { width: 80%; height: 80%; object-fit: contain; pointer-events: none; user-select: none; }
-.reload-key:active { transform: scale(0.92); }
-.reload-key:focus-visible { outline: 2px solid #1976d2; outline-offset: 2px; }
+.game-option img { width: 60%; height: 60%; object-fit: contain; pointer-events: none; user-select: none; }
+.game-option:active { transform: scale(0.92); }
+.game-option:focus-visible { outline: 2px solid #1976d2; outline-offset: 2px; }

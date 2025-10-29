@@ -42,7 +42,7 @@ const Game: React.FC<GameProps> = ({ game }) => {
 
   const [gameHasFinished, setGameHasFinished] = useState(false);
 
-  const handleKeyPress = (value: number) => {
+  const onNumberPressed = (value: number) => {
     if (
       selectedCell !== undefined &&
       !board[selectedCell]?.fixed === true
@@ -74,7 +74,7 @@ const Game: React.FC<GameProps> = ({ game }) => {
           onCellClick={setSelectedCell}
         />
         <Keyboard 
-          onKeyPress={handleKeyPress} 
+          onNumberPressed={onNumberPressed} 
           onClearBoard={onClearBoard}
         />
       </>
