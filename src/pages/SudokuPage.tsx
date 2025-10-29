@@ -63,7 +63,11 @@ const Game: React.FC<GameProps> = ({ game }) => {
     const clearedBoard = board.map(cell => cell.fixed ? cell : { ...cell, value: '0' });
     setBoard(clearedBoard);
     saveSudokuBoard(clearedBoard);
-  }
+  };
+
+  const onErase = () => {
+    onNumberPressed(0);
+  };
 
   if (!gameHasFinished) {
     return (
@@ -76,6 +80,7 @@ const Game: React.FC<GameProps> = ({ game }) => {
         <Keyboard 
           onNumberPressed={onNumberPressed} 
           onClearBoard={onClearBoard}
+          onErase={onErase}
         />
       </>
     );
