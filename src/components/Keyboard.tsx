@@ -9,7 +9,8 @@ import annotationIcon from '../assets/annotation.svg';
 interface KeyboardProps {
   onNumberPressed?: (value: number) => void;
   onClearBoard: () => void;
-  onUndo?: () => void;
+  onUndo: () => void;
+  undoDisabled: boolean;
   onErase?: () => void;
   onAnnotate?: () => void;
 }
@@ -18,13 +19,14 @@ const Keyboard: React.FC<KeyboardProps> = ({
   onNumberPressed, 
   onClearBoard, 
   onUndo,
+  undoDisabled,
   onErase,
   onAnnotate
  }) => (
   <div className="keyboard-wrapper">
     <div className="game-options-row" role="group" aria-label="Game options">
       <GameOption icon={reloadIcon} label="Reload board" onClick={onClearBoard} />
-      {onUndo && <GameOption icon={undoIcon} label="Undo" onClick={onUndo} />}
+      <GameOption icon={undoIcon} label="Undo" onClick={onUndo} disabled={undoDisabled} />
       {onErase && <GameOption icon={eraseIcon} label="Erase" onClick={onErase} />}
       {onAnnotate && <GameOption icon={annotationIcon} label="Annotation" onClick={onAnnotate} />}
     </div>
@@ -36,25 +38,27 @@ const GameOption: React.FC<{
   icon: string;
   label: string;
   onClick: () => void;
+  disabled?: boolean | undefined;
   className?: string;
-}> = ({ icon, label, onClick, className }) => {
+}> = ({ icon, label, onClick, disabled = false, className }) => {
   const handle = useCallback(
     (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+      if (disabled) return;
       if ('key' in e) {
         if (e.key !== 'Enter' && e.key !== ' ') return;
         e.preventDefault();
       }
-      onClick();
+      if (!disabled) onClick();
     },
-    [onClick]
+    [onClick, disabled]
   );
 
   return (
     <div
-      className={`game-option${className ? ' ' + className : ''}`}
+      className={`game-option${disabled ? ' disabled' : ''}${className ? ' ' + className : ''}`}
       role="button"
-      tabIndex={0}
-      aria-label={label}
+      tabIndex={disabled ? -1 : 0}
+      aria-label={label + (disabled ? ' (disabled)' : '')}
       onClick={handle}
       onKeyDown={handle}
     >

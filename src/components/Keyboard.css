@@ -93,3 +93,9 @@
 .game-option img { width: 60%; height: 60%; object-fit: contain; pointer-events: none; user-select: none; }
 .game-option:active { transform: scale(0.92); }
 .game-option:focus-visible { outline: 2px solid #1976d2; outline-offset: 2px; }
+.game-option.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(40%);
+}
+.game-option.disabled:active { transform: none; }

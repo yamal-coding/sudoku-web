@@ -35,38 +35,68 @@ interface GameProps {
 
 const Game: React.FC<GameProps> = ({ game }) => {
   const [selectedCell, setSelectedCell] = useState<number | undefined>(undefined);
-  
-  const [board, setBoard] = useState<SudokuCell[]>(
-    game.mission
-  );
-
+  const [board, setBoard] = useState<SudokuCell[]>(game.mission);
+  const [history, setHistory] = useState<Array<{ index: number; prev: string | number }>>([]);
   const [gameHasFinished, setGameHasFinished] = useState(false);
 
   const onNumberPressed = (value: number) => {
-    if (
-      selectedCell !== undefined &&
-      !board[selectedCell]?.fixed === true
-    ) {
-      const newBoard = [...board];
-      newBoard[selectedCell] = { ...newBoard[selectedCell], value: value.toString(), fixed: false };
-      setBoard(newBoard);
-      saveSudokuBoard(newBoard);
+    if (selectedCell === undefined) return;
 
-      if (checkIfBoardIsComplete(newBoard, game.solution)) {
-        onGameFinished()
-        setGameHasFinished(true);
-      }
+    const current = board[selectedCell];
+    if (!current || current.fixed) return;
+    
+    const prevValue = current.value;
+    const newBoard = [...board];
+    newBoard[selectedCell] = { ...current, value: value.toString(), fixed: false } as SudokuCell;
+
+    // Record history only if actual change
+    if (prevValue !== value.toString()) {
+      setHistory(h => [...h, { index: selectedCell, prev: prevValue }]);
+    }
+    
+    setBoard(newBoard);
+    saveSudokuBoard(newBoard);
+    
+    if (checkIfBoardIsComplete(newBoard, game.solution)) {
+      onGameFinished();
+      setGameHasFinished(true);
     }
   };
 
   const onClearBoard = () => {
-    const clearedBoard = board.map(cell => cell.fixed ? cell : { ...cell, value: '0' });
+    const clearedBoard = board.map(cell => (cell.fixed ? cell : { ...cell, value: '0' }));
     setBoard(clearedBoard);
     saveSudokuBoard(clearedBoard);
+    setHistory([]);
   };
 
   const onErase = () => {
     onNumberPressed(0);
+  };
+
+  const onUndo = () => {
+    setHistory(h => {
+      const len = h.length;
+      if (len === 0) return h;
+      
+      const lastEntry = h[len - 1];
+      const newHistory = h.slice(0, len - 1);
+
+      setBoard(prev => {
+        const undoneBoard = [...prev];
+        const cell = undoneBoard[lastEntry.index];
+        if (cell) {
+          undoneBoard[lastEntry.index] = { ...cell, value: lastEntry.prev } as SudokuCell;
+          saveSudokuBoard(undoneBoard);
+        }
+        return undoneBoard;
+      });
+
+      if (gameHasFinished) {
+        setGameHasFinished(checkIfBoardIsComplete(board, game.solution));
+      }
+      return newHistory;
+    });
   };
 
   if (!gameHasFinished) {
@@ -81,6 +111,8 @@ const Game: React.FC<GameProps> = ({ game }) => {
           onNumberPressed={onNumberPressed} 
           onClearBoard={onClearBoard}
           onErase={onErase}
+          onUndo={history.length ? onUndo : () => {}}
+            undoDisabled={history.length === 0}
         />
       </>
     );
