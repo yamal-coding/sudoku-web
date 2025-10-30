@@ -1,6 +1,6 @@
 # Sudoku Web
 
-This repo implements a Web version of Sudoku game. 
+This repo implements a Web version of Sudoku game and the idea of this project is to implement it through AI agents (GitHub copilot right now) to test how they behave.
 
 # Tech Stack
 
@@ -11,5 +11,9 @@ This repo implements a Web version of Sudoku game.
 Run following command to deploy the game over localhost:
 
 ```
-$> npm run dev
+$ npm run dev
 ```
+
+# Icons
+
+Icons used in this Sudoku were taken from https://remixicon.com/
