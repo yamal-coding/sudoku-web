@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import './Keyboard.css';
-import numberIcons from './Numbers.tsx';
+import numberIcons from './Numbers.js';
 import reloadIcon from '../assets/reload.svg';
 import undoIcon from '../assets/undo.svg';
 import eraseIcon from '../assets/erase.svg';
@@ -11,8 +11,9 @@ interface KeyboardProps {
   onClearBoard: () => void;
   onUndo: () => void;
   undoDisabled: boolean;
-  onErase?: () => void;
-  onAnnotate?: () => void;
+  onErase: () => void;
+  onAnnotate: () => void;
+  annotateActive?: boolean;
 }
 
 const Keyboard: React.FC<KeyboardProps> = ({ 
@@ -21,14 +22,20 @@ const Keyboard: React.FC<KeyboardProps> = ({
   onUndo,
   undoDisabled,
   onErase,
-  onAnnotate
+  onAnnotate,
+  annotateActive = false
  }) => (
   <div className="keyboard-wrapper">
     <div className="game-options-row" role="group" aria-label="Game options">
-      <GameOption icon={reloadIcon} label="Reload board" onClick={onClearBoard} />
+      <GameOption icon={reloadIcon} label="Clear" onClick={onClearBoard} />
       <GameOption icon={undoIcon} label="Undo" onClick={onUndo} disabled={undoDisabled} />
-      {onErase && <GameOption icon={eraseIcon} label="Erase" onClick={onErase} />}
-      {onAnnotate && <GameOption icon={annotationIcon} label="Annotation" onClick={onAnnotate} />}
+      <GameOption icon={eraseIcon} label="Erase" onClick={onErase} />
+      <GameOption
+        icon={annotationIcon}
+        label={`Notes (${annotateActive ? 'On' : 'Off'})`}
+        onClick={onAnnotate}
+        className={annotateActive ? 'active' : ''}
+      />
     </div>
     {onNumberPressed && <NumericKeyboard onKeyPress={onNumberPressed} />}
   </div>
@@ -63,6 +70,7 @@ const GameOption: React.FC<{
       onKeyDown={handle}
     >
       <img src={icon} alt="" aria-hidden="true" draggable={false} />
+      <span className="game-option-label" aria-hidden="true">{label}</span>
     </div>
   );
 };

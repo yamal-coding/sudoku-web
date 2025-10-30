@@ -99,3 +99,15 @@
   filter: grayscale(40%);
 }
 .game-option.disabled:active { transform: none; }
+.game-option-label {
+  position: absolute;
+  bottom: -1.05em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #222;
+  pointer-events: none;
+  user-select: none;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import './sudoku.css';
-import numberIcons from './Numbers.tsx';
+import numberIcons from './Numbers.js';
 
 interface SudokuProps {
   board: SudokuCell[];
@@ -30,6 +30,7 @@ const Sudoku: React.FC<SudokuProps> = ({ board, selectedCell, onCellClick }) => 
             const cellIndex = rowIdx * 9 + colIdx;
 
             const iconSrc = !isEmpty ? numberIcons[value] : undefined;
+            const annotations = cell.annotations || [];
             return (
               <div
                 className={cellClassName}
@@ -52,6 +53,30 @@ const Sudoku: React.FC<SudokuProps> = ({ board, selectedCell, onCellClick }) => 
                     draggable={false}
                   />
                 )}
+                {!iconSrc && annotations.length > 0 && (
+                  <div className="annotation-grid" aria-hidden="true">
+                    {Array.from({ length: 9 }, (_, k) => {
+                      const noteNum = k + 1;
+                      const active = annotations.includes(noteNum);
+                      const svgSrc = numberIcons[noteNum];
+                      return (
+                        <div
+                          key={noteNum}
+                          className={`annotation-cell${active ? ' active' : ''}`}
+                        >
+                          {active && (
+                            <img
+                              src={svgSrc}
+                              alt=""
+                              draggable={false}
+                              className="annotation-icon"
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -64,6 +89,7 @@ const Sudoku: React.FC<SudokuProps> = ({ board, selectedCell, onCellClick }) => 
 export interface SudokuCell {
   value: string | number;
   fixed: boolean;
+  annotations?: number[];
 }
 
 export default Sudoku;

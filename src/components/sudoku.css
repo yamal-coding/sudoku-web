@@ -43,6 +43,38 @@
   background-color: #ffff00;
 }
 
+/* Annotation grid inside empty cells */
+.annotation-grid {
+  position: absolute;
+  inset: 4% 4%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  font-size: clamp(0.35rem, 1.6vw, 0.55rem);
+  line-height: 1;
+  color: #222;
+  pointer-events: none; /* avoid intercepting clicks */
+  user-select: none;
+}
+.annotation-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  opacity: 0.6;
+}
+.annotation-cell.active {
+  opacity: 1;
+}
+.annotation-icon {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+}
+
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
   .sudoku-grid {
