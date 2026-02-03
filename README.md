@@ -2,6 +2,8 @@
 
 This repo implements a Web version of Sudoku game and the idea of this project is to implement it through AI agents (GitHub copilot right now) to test how they behave.
 
+You can play it here: https://yamal-coding.github.io/sudoku-web/
+
 # Tech Stack
 
 - React + Vite
