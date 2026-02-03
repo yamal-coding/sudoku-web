@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState } from 'react';
-import { useSudoku } from '../hooks/SudokuHooks.js';
 import { saveSudokuBoard, onGameFinished } from '../services/SudokuService.js';
 import type { SudokuGame } from '../services/SudokuService.js';
 import type { SudokuCell } from '../components/Sudoku.js';
@@ -8,30 +7,12 @@ import Keyboard from '../components/Keyboard.js';
 import Sudoku from '../components/Sudoku.js';
 
 interface SudokuPageProps {
-  difficulty: 'easy' | 'medium' | 'hard';
+  game: SudokuGame;
   onBackToMenu: () => void;
 }
 
-const SudokuPage: React.FC<SudokuPageProps> = ({ difficulty, onBackToMenu }) => {
-  const { game, loading, error } = useSudoku(difficulty);
-
-  if (error) {
-    return <Error />;
-  }
-
-  if (loading || game === null) {
-    return <Loading />;
-  }
-
+const SudokuPage: React.FC<SudokuPageProps> = ({ game, onBackToMenu }) => {
   return <Game game={game} onBackToMenu={onBackToMenu} />;
-};
-
-const Error: React.FC = () => {
-  return <div>Error loading Sudoku : (</div>;
-}
-
-const Loading: React.FC = () => {
-  return <div>Loading...</div>;
 }
 
 interface GameProps {

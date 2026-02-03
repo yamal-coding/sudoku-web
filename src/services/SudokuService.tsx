@@ -7,13 +7,15 @@ export interface SudokuGame {
   solution: string;
 }
 
-export async function getSudokuGame(difficulty: 'easy' | 'medium' | 'hard' = 'easy'): Promise<SudokuGame> {
-  // Check for saved board and solution in localStorage before making API request
+export function getOngoingGame(): SudokuGame | null {
   const saved = loadSudokuGame();
   if (saved) {
     return { mission: saved.board, solution: saved.solution };
   }
+  return null;
+}
 
+export async function fetchNewGame(difficulty: 'easy' | 'medium' | 'hard' = 'easy'): Promise<SudokuGame> {
   const data = await fetchSudoku(difficulty);
   const parsedBoard = parseBoardString(data.mission);
   // Save both board and solution to localStorage
