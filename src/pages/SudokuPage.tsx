@@ -7,8 +7,13 @@ import type { SudokuCell } from '../components/Sudoku.js';
 import Keyboard from '../components/Keyboard.js';
 import Sudoku from '../components/Sudoku.js';
 
-const SudokuPage: React.FC = () => {
-  const { game, loading, error } = useSudoku();
+interface SudokuPageProps {
+  difficulty: 'easy' | 'medium' | 'hard';
+  onBackToMenu: () => void;
+}
+
+const SudokuPage: React.FC<SudokuPageProps> = ({ difficulty, onBackToMenu }) => {
+  const { game, loading, error } = useSudoku(difficulty);
 
   if (error) {
     return <Error />;
@@ -18,7 +23,7 @@ const SudokuPage: React.FC = () => {
     return <Loading />;
   }
 
-  return <Game game={game}/>;
+  return <Game game={game} onBackToMenu={onBackToMenu} />;
 };
 
 const Error: React.FC = () => {
@@ -31,9 +36,10 @@ const Loading: React.FC = () => {
 
 interface GameProps {
   game: SudokuGame;
+  onBackToMenu: () => void;
 }
 
-const Game: React.FC<GameProps> = ({ game }) => {
+const Game: React.FC<GameProps> = ({ game, onBackToMenu }) => {
   const [selectedCell, setSelectedCell] = useState<number | undefined>(undefined);
   const [board, setBoard] = useState<SudokuCell[]>(game.mission);
   const [history, setHistory] = useState<Array<{ index: number; prevValue: string | number; prevAnnotations?: number[] }>>([]);
@@ -173,6 +179,20 @@ const Game: React.FC<GameProps> = ({ game }) => {
   if (!gameHasFinished) {
     return (
       <>
+        <button 
+          onClick={onBackToMenu}
+          style={{
+            margin: '10px',
+            padding: '10px 20px',
+            fontSize: '16px',
+            cursor: 'pointer',
+            borderRadius: '5px',
+            border: '1px solid #666',
+            backgroundColor: '#f0f0f0'
+          }}
+        >
+          Back to Menu
+        </button>
         <Sudoku 
           board={board}
           selectedCell={selectedCell}
@@ -192,7 +212,26 @@ const Game: React.FC<GameProps> = ({ game }) => {
   } else {
     return (
       <div>
-        Game finished
+        <div>Game finished</div>
+        <button 
+          onClick={() => {
+            onGameFinished();
+            onBackToMenu();
+          }}
+          style={{
+            margin: '20px',
+            padding: '15px 30px',
+            fontSize: '18px',
+            cursor: 'pointer',
+            borderRadius: '8px',
+            border: '2px solid #4CAF50',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            fontWeight: 'bold'
+          }}
+        >
+          Back to Menu
+        </button>
       </div>
     );
   }
