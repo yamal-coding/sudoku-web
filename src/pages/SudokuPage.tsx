@@ -1,10 +1,10 @@
-import React from 'react';
 import { useState } from 'react';
 import { saveSudokuBoard, onGameFinished } from '../services/SudokuService.js';
 import type { SudokuGame } from '../services/SudokuService.js';
 import type { SudokuCell } from '../components/Sudoku.js';
 import Keyboard from '../components/Keyboard.js';
 import Sudoku from '../components/Sudoku.js';
+import { styles } from './SudokuPage.styles.js';
 
 interface SudokuPageProps {
   game: SudokuGame;
@@ -159,20 +159,9 @@ function Game({ game, onBackToMenu }: GameProps) {
 
   if (!gameHasFinished) {
     return (
-      <>
-        <button 
-          onClick={onBackToMenu}
-          style={{
-            margin: '10px',
-            padding: '10px 20px',
-            fontSize: '16px',
-            cursor: 'pointer',
-            borderRadius: '5px',
-            border: '1px solid #666',
-            backgroundColor: '#f0f0f0'
-          }}
-        >
-          Back to Menu
+      <div style={styles.gameContainer}>
+        <button onClick={onBackToMenu} style={styles.backButton}>
+          ← Back to Menu
         </button>
         <Sudoku 
           board={board}
@@ -188,35 +177,25 @@ function Game({ game, onBackToMenu }: GameProps) {
           onAnnotate={onAnnotateToggle}
           annotateActive={annotationMode}
         />
-      </>
-    );
-  } else {
-    return (
-      <div>
-        <div>Game finished</div>
-        <button 
-          onClick={() => {
-            onGameFinished();
-            onBackToMenu();
-          }}
-          style={{
-            margin: '20px',
-            padding: '15px 30px',
-            fontSize: '18px',
-            cursor: 'pointer',
-            borderRadius: '8px',
-            border: '2px solid #4CAF50',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            fontWeight: 'bold'
-          }}
-        >
-          Back to Menu
-        </button>
       </div>
     );
   }
-};
+
+  return (
+    <div style={styles.finishedContainer}>
+      <div style={styles.finishedText}>Game finished</div>
+      <button 
+        onClick={() => {
+          onGameFinished();
+          onBackToMenu();
+        }}
+        style={styles.finishedButton}
+      >
+        Back to Menu
+      </button>
+    </div>
+  );
+}
 
 
 function checkIfBoardIsComplete(board: SudokuCell[], solution: string): boolean {
