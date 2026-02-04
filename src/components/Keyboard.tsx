@@ -16,7 +16,7 @@ interface KeyboardProps {
   annotateActive?: boolean;
 }
 
-const Keyboard: React.FC<KeyboardProps> = ({ 
+function Keyboard({ 
   onNumberPressed, 
   onClearBoard, 
   onUndo,
@@ -24,7 +24,8 @@ const Keyboard: React.FC<KeyboardProps> = ({
   onErase,
   onAnnotate,
   annotateActive = false
- }) => (
+ }: KeyboardProps) {
+  return (
   <div className="keyboard-wrapper">
     <div className="game-options-row" role="group" aria-label="Game options">
       <GameOption icon={reloadIcon} label="Clear" onClick={onClearBoard} />
@@ -39,15 +40,16 @@ const Keyboard: React.FC<KeyboardProps> = ({
     </div>
     {onNumberPressed && <NumericKeyboard onKeyPress={onNumberPressed} />}
   </div>
-);
+  );
+}
 
-const GameOption: React.FC<{
+function GameOption({ icon, label, onClick, disabled = false, className }: {
   icon: string;
   label: string;
   onClick: () => void;
   disabled?: boolean | undefined;
   className?: string;
-}> = ({ icon, label, onClick, disabled = false, className }) => {
+}) {
   const handle = useCallback(
     (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
       if (disabled) return;
@@ -73,13 +75,13 @@ const GameOption: React.FC<{
       <span className="game-option-label" aria-hidden="true">{label}</span>
     </div>
   );
-};
+}
 
 interface NumericKeyboardProps {
   onKeyPress: (value: number) => void;
 }
 
-const NumericKeyboard: React.FC<NumericKeyboardProps> = ({ onKeyPress }) => {
+function NumericKeyboard({ onKeyPress }: NumericKeyboardProps) {
   const handleActivate = useCallback(
     (val: number) => (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
       // Allow click or Enter/Space key press
@@ -117,6 +119,6 @@ const NumericKeyboard: React.FC<NumericKeyboardProps> = ({ onKeyPress }) => {
       })}
     </div>
   );
-};
+}
 
 export default Keyboard;

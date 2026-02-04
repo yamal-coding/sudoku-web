@@ -8,7 +8,7 @@ interface SudokuProps {
   onCellClick?: (cellIndex: number) => void;
 }
 
-const Sudoku: React.FC<SudokuProps> = ({ board, selectedCell, onCellClick }) => {
+function Sudoku({ board, selectedCell, onCellClick }: SudokuProps) {
   const rows = Array.from({ length: 9 }, (_, row) =>
     board.slice(row * 9, row * 9 + 9)
   );
@@ -84,7 +84,7 @@ const Sudoku: React.FC<SudokuProps> = ({ board, selectedCell, onCellClick }) => 
       ))}
     </div>
   );
-};
+}
 
 export interface SudokuCell {
   value: string | number;

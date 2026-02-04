@@ -11,7 +11,7 @@ interface SudokuPageProps {
   onBackToMenu: () => void;
 }
 
-const SudokuPage: React.FC<SudokuPageProps> = ({ game, onBackToMenu }) => {
+function SudokuPage({ game, onBackToMenu }: SudokuPageProps) {
   return <Game game={game} onBackToMenu={onBackToMenu} />;
 }
 
@@ -20,7 +20,7 @@ interface GameProps {
   onBackToMenu: () => void;
 }
 
-const Game: React.FC<GameProps> = ({ game, onBackToMenu }) => {
+function Game({ game, onBackToMenu }: GameProps) {
   const [selectedCell, setSelectedCell] = useState<number | undefined>(undefined);
   const [board, setBoard] = useState<SudokuCell[]>(game.mission);
   const [history, setHistory] = useState<Array<{ index: number; prevValue: string | number; prevAnnotations?: number[] }>>([]);

@@ -9,7 +9,7 @@ interface DifficultyButtonProps {
   onClick: () => void;
 }
 
-const DifficultyButton: React.FC<DifficultyButtonProps> = ({ label, color, onClick }) => {
+function DifficultyButton({ label, color, onClick }: DifficultyButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -27,9 +27,9 @@ const DifficultyButton: React.FC<DifficultyButtonProps> = ({ label, color, onCli
       {label}
     </button>
   );
-};
+}
 
-const MainMenuPage: React.FC<MainMenuPageProps> = ({ onSelectDifficulty }) => {
+function MainMenuPage({ onSelectDifficulty }: MainMenuPageProps) {
   return (
     <div style={{
       display: 'flex',
@@ -66,6 +66,6 @@ const MainMenuPage: React.FC<MainMenuPageProps> = ({ onSelectDifficulty }) => {
       </div>
     </div>
   );
-};
+}
 
 export default MainMenuPage;
