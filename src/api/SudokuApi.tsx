@@ -23,7 +23,7 @@ async function readPuzzleCount(reader: ReadableStreamDefaultReader<Uint8Array>, 
 
 export async function fetchSudoku(difficulty: 'easy' | 'medium' | 'hard' = 'easy') {
   try {
-    const response = await fetch(`src/levels/${difficulty}.txt`);
+    const response = await fetch(`${import.meta.env.BASE_URL}levels/${difficulty}.txt`);
     
     if (!response.body) {
       throw new Error('Unable to get response stream');
